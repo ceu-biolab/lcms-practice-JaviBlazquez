@@ -44,6 +44,33 @@ public class Lipid {
         return this.lipidType;
     }
 
+    // TODO: Asigno valor numérico para poder COMPARAR los tipos en la RULE
+    //PG < PE < PI < PA < PS << PC.
+    public int getTypePriority() {
+        if(this.lipidType.equalsIgnoreCase("PG")) {
+            return 1;
+        }
+        else if(this.lipidType.equalsIgnoreCase("PE")) {
+            return 2;
+        }
+        else if(this.lipidType.equalsIgnoreCase("PI")) {
+            return 3;
+        }
+        else if(this.lipidType.equalsIgnoreCase("PA")) {
+            return 4;
+        }
+        else if(this.lipidType.equalsIgnoreCase("PS")) {
+            return 5;
+        }
+        else if(this.lipidType.equalsIgnoreCase("PC")) {
+            return 6;
+        }
+        else {
+            return 1000;
+        }
+    }
+
+
     public int getCarbonCount() {
         return carbonCount;
     }

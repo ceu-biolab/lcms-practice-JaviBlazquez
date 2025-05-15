@@ -19,6 +19,7 @@ public class ElutionOrderTest {
     static final Logger LOG = LoggerFactory.getLogger(ElutionOrderTest.class);
 
     // !!TODO For the adduct detection both regular algorithms or drools can be used as far the tests are passed.
+    // DONE!! WAITING FOR ALBERTO''S APPROVAL =====> WE HAVE IT!!
 
 
     @Before
@@ -40,6 +41,7 @@ public class ElutionOrderTest {
         RuleUnitInstance<LipidScoreUnit> instance = RuleUnitProvider.get().createRuleUnitInstance(lipidScoreUnit);
 
         // TODO CHECK THE Monoisotopic MASSES OF THE COMPOUNDS IN https://chemcalc.org/
+        // A traves de la fórmula se puede obtener
 
         Lipid lipid1 = new Lipid(1, "TG 54:3", "C57H104O6", "TG", 54, 3); // MZ of [M+H]+ = 885.79057
         Lipid lipid2 = new Lipid(2, "TG 52:3", "C55H100O6", "TG", 52, 3); // MZ of [M+H]+ = 857.75927
@@ -76,7 +78,7 @@ public class ElutionOrderTest {
      * carbons is the same. The higher the number of double bonds, the shorter the RT.
      */
     @Test
-    public void score1BasedOnRTDoubleBonds() {
+    public void score2BasedOnRTDoubleBonds() {
         // Assume lipids already annotated
         LOG.info("Creating RuleUnit");
         LipidScoreUnit lipidScoreUnit = new LipidScoreUnit();
@@ -85,6 +87,7 @@ public class ElutionOrderTest {
 
         // TODO CHECK THE Monoisotopic MASSES OF THE COMPOUNDS IN https://chemcalc.org/
 
+        // NO APARECE LIPIDO 2
         Lipid lipid1 = new Lipid(1, "TG 54:3", "C57H104O6", "TG", 54, 3); // MZ of [M+H]+ = 885.79057
         Lipid lipid2 = new Lipid(2, "TG 54:4", "C57H102O6", "TG", 54, 4); // MZ of [M+H]+ = 883.77492
         Lipid lipid3 = new Lipid(3, "TG 54:2", "C57H106O6", "TG", 54, 2); // MZ of [M+H]+ = 887.80622
@@ -121,7 +124,7 @@ public class ElutionOrderTest {
      * -> PG < PE < PI < PA < PS << PC.
      */
     @Test
-    public void score1BasedOnLipidType() {
+    public void score3BasedOnRTDoubleBonds() {
         // Assume lipids already annotated
         LOG.info("Creating RuleUnit");
         LipidScoreUnit lipidScoreUnit = new LipidScoreUnit();
@@ -167,7 +170,7 @@ public class ElutionOrderTest {
      * -> PG < PE < PI < PA < PS << PC.
      */
     @Test
-    public void negativeScoreBasedOnRTNumberOfCarbons() {
+    public void score4BasedOnRTDoubleBonds() {
         // Assume lipids already annotated
         LOG.info("Creating RuleUnit");
         LipidScoreUnit lipidScoreUnit = new LipidScoreUnit();
@@ -211,7 +214,7 @@ public class ElutionOrderTest {
      * carbons is the same. The higher the number of double bonds, the shorter the RT.
      */
     @Test
-    public void negativeScoreBasedOnRTDoubleBonds() {
+    public void score1BasedOnRTDoubleBonds() {
         // Assume lipids already annotated
         LOG.info("Creating RuleUnit");
         LipidScoreUnit lipidScoreUnit = new LipidScoreUnit();
@@ -254,7 +257,7 @@ public class ElutionOrderTest {
      * double bonds is the same. The larger the number of carbons, the longer the RT.
      */
     @Test
-    public void negativeScoreBasedOnLipidType() {
+    public void score5BasedOnRTCarbonNumbers() {
         // Assume lipids already annotated
         LOG.info("Creating RuleUnit");
         LipidScoreUnit lipidScoreUnit = new LipidScoreUnit();

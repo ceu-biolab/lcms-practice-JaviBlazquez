@@ -25,15 +25,15 @@ public class AdductDetectionTest {
     public void shouldDetectAdductBasedOnMzDifference() {
 
         // Given two peaks with ~21.98 Da difference (e.g., [M+H]+ and [M+Na]+)
-        Peak mH = new Peak(700.500, 100000.0); // [M+H]+
-        Peak mNa = new Peak(722.482, 80000.0);  // [M+Na]+
+        Peak mH = new Peak(700.500, 100000.0, "[M+H]+"); // [M+H]+
+        Peak mNa = new Peak(722.482, 80000.0, "[M+Na]+");  // [M+Na]+
         Lipid lipid = new Lipid(1, "PC 34:1", "C42H82NO8P", "PC", 34, 1);
 
         double annotationMZ = 700.49999d;
         double annotationIntensity = 80000.0;
         double annotationRT = 6.5d;
         Annotation annotation = new Annotation(lipid, annotationMZ, annotationIntensity, annotationRT, IoniationMode.POSITIVE, Set.of(mH, mNa));
-
+        annotation.findAdduct();
 
         // Then we should call the algorithmic/knowledge system rules fired to detect the adduct and Set it!
         //
@@ -44,12 +44,12 @@ public class AdductDetectionTest {
 
     @Test
     public void shouldDetectLossOfWaterAdduct() {
-        Peak mh = new Peak(700.500, 90000.0);        // [M+H]+
-        Peak mhH2O = new Peak(682.4894, 70000.0);     // [M+H–H₂O]+, ~18.0106 Da less
+        Peak mh = new Peak(700.500, 90000.0, "[M+H]+");        // [M+H]+
+        Peak mhH2O = new Peak(682.4894, 70000.0, "[M+H-H2O]+");     // [M+H–H₂O]+, ~18.0106 Da less
 
         Lipid lipid = new Lipid(1, "PE 36:2", "C41H78NO8P", "PE", 36, 2);
         Annotation annotation = new Annotation(lipid, mh.getMz(), mh.getIntensity(), 7.5d, IoniationMode.POSITIVE, Set.of(mh, mhH2O));
-
+        annotation.findAdduct();
 
 
         assertNotNull("[M+H]+ should be detected", annotation.getAdduct());
@@ -61,11 +61,12 @@ public class AdductDetectionTest {
     public void shouldDetectDoublyChargedAdduct() {
         // Assume real M = (700.500 - 1.0073) = 699.4927
         // So [M+2H]2+ = (M + 2.0146) / 2 = 350.7536
-        Peak singlyCharged = new Peak(700.500, 100000.0);  // [M+H]+
-        Peak doublyCharged = new Peak(350.754, 85000.0);   // [M+2H]2+
+        Peak singlyCharged = new Peak(700.500, 100000.0, "[M+H]+");  // [M+H]+
+        Peak doublyCharged = new Peak(350.754, 85000.0, "[M+2H]2+");   // [M+2H]2+
 
         Lipid lipid = new Lipid(3, "TG 54:3", "C57H104O6", "TG", 54, 3);
         Annotation annotation = new Annotation(lipid, singlyCharged.getMz(), singlyCharged.getIntensity(), 10d, IoniationMode.POSITIVE, Set.of(singlyCharged, doublyCharged));
+        annotation.findAdduct();
 
         assertNotNull("[M+H]+ should be detected", annotation.getAdduct());
 

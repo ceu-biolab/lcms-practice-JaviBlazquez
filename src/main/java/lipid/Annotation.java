@@ -1,5 +1,5 @@
 package lipid;
-
+import adduct.Adduct;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
@@ -93,10 +93,30 @@ public class Annotation {
         this.score = score;
     }
 
-    // !CHECK Take into account that the score should be normalized between -1 and 1
+    // !TODO Take into account that the score should be normalized between -1 and 1
     public void addScore(int delta) {
         this.score += delta;
         this.totalScoresApplied++;
+    }
+
+    public void findAdduct() {
+        double diff;
+        double mz = this.mz;
+        double TheoreticalAddcut;
+        double AnalyticalAdduct;
+        // Calcular el aducto de referencia // Suele ser un loop sobre los aductos
+        // Loop with the hypothesis about the referenceMonoIsotopicMass being a certain adduct.
+        for (Peak element : getGroupedSignals()) {
+            TheoreticalAddcut = Adduct.getMonoisotopicMassFromMZ(element.getMz(), element.getAdductName());
+            AnalyticalAdduct = Adduct.getMonoisotopicMassFromMZ(mz, element.getAdductName());
+            diff = TheoreticalAddcut - AnalyticalAdduct;
+            if (Math.abs(diff) <= 0.005) {
+                System.out.println("Adduct found");
+                this.setAdduct(element.getAdductName());
+                System.out.println("The adduct is: " + getAdduct());
+                break;
+            }
+        }
     }
 
     /**
